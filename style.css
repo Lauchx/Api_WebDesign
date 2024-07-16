@@ -3,7 +3,20 @@ body{
     background: black;
 }
 table{
+    text-align: center;
     color: white;
     background: black;
     border: 1px solid white;
+    border-radius: 5px;
+    border-collapse: collapse;
+}
+th{
+    background: black;
+}
+tr:nth-child(odd){
+    background: #727272;
+    margin: 0;
+}
+.predictions, .groups, button{
+    float: left;
 }
