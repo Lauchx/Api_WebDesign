@@ -33,8 +33,8 @@ function getApiJsonGroups() {
         })
     })
 }
- // I wil create a get method for "predictions". This way, if the user refreshes the page the predictions won´t be delete in the page 
- getApiJsonGroups()
+// I wil create a get method for "predictions". This way, if the user refreshes the page the predictions won´t be delete in the page 
+getApiJsonGroups()
     .then(apiGroups => {
         let tbodyGroups = document.getElementsByTagName("tbody")[0]
         tbodyGroups.innerHTML = ""
@@ -71,24 +71,12 @@ getApiJsonPredictions()
         let tbodyPredictions = document.getElementsByTagName('tbody')[1]
         tbodyPredictions.innerHTML = ""
         apiPredictions.forEach(apiPredictions => {
-            let newRowPredictions= tbodyPredictions.insertRow()
-            let cellPredictions= newRowPredictions.insertCell()
+            let newRowPredictions = tbodyPredictions.insertRow()
+            let cellPredictions = newRowPredictions.insertCell()
             cellPredictions.innerHTML = apiPredictions.teamName + `<button onclick='deleteTeam(${apiPredictions.id})'>Delete</button>`
         })
-        
+
     })
-function add_inTablePrediction(team){
-        let tbody = document.getElementsByTagName('tbody')[1]
-        
-        let newRow = tbody.insertRow()
-        let cellTeams = newRow.insertCell()
-
-       // let teamId = getTeamIdByName(teamName) ${teamId};
-        let button = `<button onclick='deleteTeam()'> Delete </button>`
-        cellTeams.innerHTML = team.teamName + button
-
-        
-}
 
 function addTeam() {
     return new Promise(function (resolve, reject) {
@@ -107,12 +95,12 @@ function addTeam() {
             }
         }
         let tbody = document.getElementsByTagName('tbody')[1]
-        
+
         let newRow = tbody.insertRow()
         let cellTeams = newRow.insertCell()
-        let button = `<button onclick='deleteTeam()'></button>` // I need api.id
+        let button = `<button onclick='deleteTeam()'></button>` // I need apiPredictions.id
         cellTeams.innerHTML = document.getElementById('teamName').value + button
-        getApiJsonPredictions()
+
         xhr.send(team)
     })
 }
@@ -122,7 +110,7 @@ function deleteTeam(teamId) {
         var xhr = new XMLHttpRequest()
         xhr.open('DELETE', `http://localhost:3000/api/data/${teamId}`)
         xhr.setRequestHeader('Content-Type', 'application/json')
-        
+
         xhr.onload = function () {
             if (xhr.status >= 200 && xhr.status < 300) {
                 resolve(xhr.response)
