@@ -73,7 +73,10 @@ getApiJsonPredictions()
         apiPredictions.forEach(apiPredictions => {
             let newRowPredictions = tbodyPredictions.insertRow()
             let cellPredictions = newRowPredictions.insertCell()
-            cellPredictions.innerHTML = apiPredictions.teamName + `<button onclick='deleteTeam(${apiPredictions.id})'>Delete</button>`
+            cellPredictions.innerHTML = apiPredictions.teamName + `<button onclick='deleteTeam(${apiPredictions.id})'>Delete</button>` + `<button onclick='upgradeTeam(${apiPredictions.id})'>Upgrade</button>`
+
+            // piendo que si pongo id="apiPredictions.id" en un div o en alguna tag => puedo hacer que una tag tenga el id, asi borrarla. sino tambien lo puedo hacer que el boton tenga el id, y hacer un parentNode.remove().
+            // es decir darle el id al botton, y borrar el padre, que en este caso es la row de la tabla.
         })
 
     })
@@ -107,7 +110,7 @@ function addTeam() {
 
 function deleteTeam(teamId) {
     return new Promise(function (resolve, reject) {
-        var xhr = new XMLHttpRequest()
+        let xhr = new XMLHttpRequest()
         xhr.open('DELETE', `http://localhost:3000/api/data/${teamId}`)
         xhr.setRequestHeader('Content-Type', 'application/json')
 
@@ -121,8 +124,35 @@ function deleteTeam(teamId) {
         xhr.onerror = function () {
             reject(Error('Error: unexpected network error.'))
         }
-        getApiJsonPredictions()
         xhr.send()
+        getApiJsonPredictions()
+    })
+}
+
+
+function upgradeTeam(teamId){
+    let teamName = prompt("Nuevo nombre del equipo")
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest()
+        xhr.open('PUT', `http://localhost:3000/api/data/${teamId}`)
+        xhr.setRequestHeader('Content-Type', 'application/json')
+
+        var team = JSON.stringify({
+            'id': teamId,
+            'name': teamName,
+        })
+        xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                resolve(xhr.response)
+            } else {
+                reject(Error(xhr.status + " " + xhr.statusText))
+            }
+        }
+        xhr.onerror = function () {
+            reject(Error('Error: unexpected network error.'))
+        }
+        xhr.send(team)
+        getApiJsonPredictions()
     })
 }
 /* function addObject() {
